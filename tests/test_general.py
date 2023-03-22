@@ -141,3 +141,11 @@ def test_wait_for_calc_timeout_slow(mongetter, stale_after, separate_files):
     res4 = _wait_for_calc_timeout_slow(1, 2)
     # One of the cached values is returned
     assert res1 == res4 or res2 == res4 or res3 == res4
+
+
+def test_hash_params_deprecation():
+    with pytest.deprecated_call(match='hash_params will be removed'):
+        @cachier(hash_params=lambda a, k: 'key')
+        def test():
+            return 'value'
+    assert test() == 'value'

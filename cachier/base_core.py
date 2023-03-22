@@ -11,7 +11,7 @@ import functools
 import hashlib
 
 
-def _default_hash_params(args, kwds):
+def _default_hash_func(args, kwds):
     # pylint: disable-next=protected-access
     key = functools._make_key(args, kwds, typed=False)
     return hashlib.sha256(str(hash(key)).encode()).hexdigest()
@@ -20,8 +20,8 @@ def _default_hash_params(args, kwds):
 class _BaseCore():
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, hash_params):
-        self.hash_func = hash_params if hash_params else _default_hash_params
+    def __init__(self, hash_func):
+        self.hash_func = hash_func if hash_func else _default_hash_func
         self.func = None
 
     def set_func(self, func):
